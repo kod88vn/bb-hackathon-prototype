@@ -8,6 +8,10 @@ class Criterion {
   	return this._weight;
   }
 
+  set weight(weight) {
+    this._weight = weight;
+  }
+
   get description() {
   	return this._description;
   }
