@@ -1,0 +1,23 @@
+.comparison
+	h3 {{compc.name}}
+	.candidate.pull-left(data-ng-repeat='can in compc.candidates')
+		.candidate-name
+			span.h4 Name: 
+			span {{::can.name}}
+		.candidate-description 
+			span.h4 Description: 
+			span {{::can.description}}
+	.clearleft
+
+	h3 Criteria
+	.criteria
+		.criterion.row(data-ng-repeat='c in compc.criteria')
+			span.criterion-description {{::c.description}}
+			.dropdown.pull-right
+				button.btn.btn-default.dropdown-toggle(type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='true')
+					span {{c.weight}} 
+				ul.dropdown-menu.width-auto.opacity-09(aria-labelledby='weight-selection')
+					li(data-ng-repeat='w in [1,2,3,4,5,6,7,8,9,10]')
+						a(href='#' data-ng-click='c.weight = w') {{::w}}
+
+
