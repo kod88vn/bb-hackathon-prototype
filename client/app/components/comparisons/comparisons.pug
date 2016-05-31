@@ -7,6 +7,9 @@
 		.candidate-description 
 			span.h4 Description: 
 			span {{::can.description}}
+		.candidate-score 
+			span.h4 Score: 
+			span {{::can.score || ' -- '}}
 	.clearleft
 
 	h3 Criteria
@@ -34,3 +37,12 @@
 				ul.dropdown-menu.width-auto.opacity-09(aria-labelledby='weight-selection')
 					li(data-ng-repeat='o in compc.opinionOptions track by o.opinionIndex')
 						a(href='#' data-ng-click='s.opinion = o; compc.calculateCriteriaWeights()') {{::o.description}}
+	h3 Candidate Surveys
+	.candidate-surveys
+		.opinion.row(data-ng-repeat='s in compc.candidateSurveys')
+			span Is 
+			span [ {{s.left.description}} ] 
+			span  better than 
+			span [ {{s.right.description}} ] 
+			span at 
+			span [ {{s.criterion.description}} ] ?
