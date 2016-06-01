@@ -8,8 +8,8 @@ class ComparisonsController {
 		this.candidates = this.generateCandidates();
 		this.criteria = this.generateCriteria();
 		this.opinionOptions = this.generateOpinionOptions();
-		this.criteriaSurveys = this.computeWeightSurveys(this.criteria);
-		this.candidateSurveys = this.computeCandidateSurveys(this.candidates);
+		this.criteriaSurveys = this.computeWeightSurveys();
+		this.candidateSurveys = this.computeCandidateSurveys();
 
 		this.calculateCriteriaWeights();
     this.calculateScores();
@@ -65,8 +65,9 @@ class ComparisonsController {
 		];
 	}
 
-	computeWeightSurveys(options) {
+	computeWeightSurveys() {
 		let surveys = [];
+		let options = this.criteria;
 
 		for(let i = 0; i < options.length - 1; i++) {
 			for(let j = i +1; j < options.length; j++) {
@@ -77,9 +78,10 @@ class ComparisonsController {
 		return surveys;
 	}
 
-	computeCandidateSurveys(options) {
+	computeCandidateSurveys() {
 		let surveys = [];
 		let criteria = this.criteria;
+		let options = this.candidates;
 
 		criteria.forEach(c => {
 			for(let i = 0; i < options.length - 1; i++) {

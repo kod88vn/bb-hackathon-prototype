@@ -35,9 +35,9 @@
 					td {{$index}}
 					td
 						span Is
-						span  [{{s.left.description}}]
+						span  [{{::s.left.description}}]
 						span  more important than
-						span  [{{s.right.description}}]?
+						span  [{{::s.right.description}}]?
 					td
 						.dropdown
 							button.btn.btn-default.dropdown-toggle(type='button' data-toggle='dropdown')
@@ -57,11 +57,11 @@
 					td {{$index}}
 					td
 						span Is
-						span  [{{s.left.description}}]
+						span  [{{::s.left.name}}]
 						span  better than
-						span  [{{s.right.description}}]
+						span  [{{::s.right.name}}]
 						span  at
-						span  [{{s.criterion.description}}] ?
+						span  [{{::s.criterion.description}}] ?
 					td
 						.dropdown
 							button.btn.btn-default.dropdown-toggle(type='button' data-toggle='dropdown')
