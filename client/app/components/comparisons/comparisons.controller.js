@@ -1,29 +1,46 @@
-import Candidate from '../../common/domain/candidate.js';
-import Criterion from '../../common/domain/criterion.js';
+import Candidate from '../../common/domain/candidate';
+import Criterion from '../../common/domain/criterion';
 
 class ComparisonsController {
 	constructor() {
 		var ctrl = this;
 		this.name = 'Comparisons';
-		this.calculateCriteriaWeights = this.calculateCriteriaWeights;
-
 		this.candidates = this.generateCandidates();
 		this.criteria = this.generateCriteria();
 		this.opinionOptions = this.generateOpinionOptions();
-		this.criteriaSurveys = this.composeSurveys(this.criteria);
-		this.candidateSurveys = this.composeCandidateSurveys(this.candidates);
+		this.criteriaSurveys = this.computeWeightSurveys(this.criteria);
+		this.candidateSurveys = this.computeCandidateSurveys(this.candidates);
+
 		this.calculateCriteriaWeights();
+    this.calculateScores();
 	}
 
 	calculateScores() {
-		this.candidates.forEach(c => {
+    let candidateScoreMap = {};
 
+    this.candidates.forEach(c => {
+      c.score = 1;
+      candidateScoreMap[c.description] = c;
+    });
+
+		this.candidateSurveys.forEach(o => {
+      let index = o.opinion.opinionIndex - 5;
+      if(index > 0) {
+        candidateScoreMap[o.left.description].score += index * o.criterion.weight;
+      } else {
+        candidateScoreMap[o.right.description].score += - index * o.criterion.weight;
+      }
 		});
 	}
 
 	calculateCriteriaWeights() {
 		let criteriaWeightMap = {};
-		this.criteria.forEach(c => criteriaWeightMap[c.description] = c);
+
+		this.criteria.forEach(c => {
+      c.weight = 1;
+      criteriaWeightMap[c.description] = c;
+    });
+
 		this.criteriaSurveys.forEach(o => {
 			let index = o.opinion.opinionIndex - 5;
 			if(index > 0) {
@@ -48,7 +65,7 @@ class ComparisonsController {
 		];
 	}
 
-	composeSurveys(options) {
+	computeWeightSurveys(options) {
 		let surveys = [];
 
 		for(let i = 0; i < options.length - 1; i++) {
@@ -60,7 +77,7 @@ class ComparisonsController {
 		return surveys;
 	}
 
-	composeCandidateSurveys(options) {
+	computeCandidateSurveys(options) {
 		let surveys = [];
 		let criteria = this.criteria;
 
@@ -68,14 +85,14 @@ class ComparisonsController {
 			for(let i = 0; i < options.length - 1; i++) {
 				for(let j = i +1; j < options.length; j++) {
 					surveys.push({
-						left: options[i], 
+						left: options[i],
 						right: options[j],
 						criterion: c,
 						opinion: this.opinionOptions[4]});
 				}
 			}
 		});
-		
+
 
 		return surveys;
 	}
@@ -90,11 +107,11 @@ class ComparisonsController {
 
 	generateCriteria() {
 		return [
-			new Criterion('Budget', 1),
-			new Criterion('Aesthetics', 1),
-			new Criterion('Maintenance Cost', 1),
-			new Criterion('Resell Value', 1),
-			new Criterion('Customizability', 1)
+			new Criterion('Budget'),
+			new Criterion('Aesthetics'),
+			new Criterion('Maintenance Cost'),
+			new Criterion('Resell Value'),
+			new Criterion('Customizability')
 		];
 	}
 }

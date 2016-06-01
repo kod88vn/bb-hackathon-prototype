@@ -2,47 +2,70 @@
 	h3 {{compc.name}}
 	.candidate.pull-left(data-ng-repeat='can in compc.candidates')
 		.candidate-name
-			span.h4 Name: 
-			span {{::can.name}}
-		.candidate-description 
-			span.h4 Description: 
-			span {{::can.description}}
-		.candidate-score 
-			span.h4 Score: 
-			span {{::can.score || ' -- '}}
+			span.h4 Name:
+			span  {{::can.name}}
+		.candidate-description
+			span.h4 Description:
+			span  {{::can.description}}
+		.candidate-score
+			span.h4 Score:
+			span  {{can.score}}
 	.clearleft
-
-	h3 Criteria
-	.criteria
-		.criterion.row(data-ng-repeat='c in compc.criteria')
-			span.criterion-description {{::c.description}}
-			span.pull-right {{c.weight}}
-			//- .dropdown.pull-right
-			//- 	button.btn.btn-default.dropdown-toggle(type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='true')
-			//- 		span {{c.weight}} 
-			//- 	ul.dropdown-menu.width-auto.opacity-09(aria-labelledby='weight-selection')
-			//- 		li(data-ng-repeat='w in [1,2,3,4,5,6,7,8,9,10]')
-			//- 			a(href='#' data-ng-click='c.weight = w') {{::w}}
-
-	h3 Criteria Surveys
-	.surveys
-		.opinion.row(data-ng-repeat='s in compc.criteriaSurveys')
-			span Is 
-			span [ {{s.left.description}} ] 
-			span  more important than 
-			span [ {{s.right.description}} ]?
-			.dropdown.pull-right
-				button.btn.btn-default.dropdown-toggle(type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='true')
-					span {{s.opinion && s.opinion.description || ' -- '}} 
-				ul.dropdown-menu.width-auto.opacity-09(aria-labelledby='weight-selection')
-					li(data-ng-repeat='o in compc.opinionOptions track by o.opinionIndex')
-						a(href='#' data-ng-click='s.opinion = o; compc.calculateCriteriaWeights()') {{::o.description}}
-	h3 Candidate Surveys
-	.candidate-surveys
-		.opinion.row(data-ng-repeat='s in compc.candidateSurveys')
-			span Is 
-			span [ {{s.left.description}} ] 
-			span  better than 
-			span [ {{s.right.description}} ] 
-			span at 
-			span [ {{s.criterion.description}} ] ?
+	.col-lg-2.col-md-4.col-sm-4.col-xs-12
+		h3 Criteria
+		.criteria
+			table.table.table.table-striped
+				tr
+					th #
+					th Criterion
+					th Weight
+				tr(data-ng-repeat='c in compc.criteria')
+					td {{$index}}
+					td {{::c.description}}
+					td {{c.weight}}
+	.col-lg-4.col-md-8.col-sm-8.col-xs-12
+		h3 Criteria Surveys
+		.surveys
+			table.table.table-default.table-striped
+				tr
+					th #
+					th Question
+					th Opinion
+				tr(data-ng-repeat='s in compc.criteriaSurveys')
+					td {{$index}}
+					td
+						span Is
+						span  [{{s.left.description}}]
+						span  more important than
+						span  [{{s.right.description}}]?
+					td
+						.dropdown
+							button.btn.btn-default.dropdown-toggle(type='button' data-toggle='dropdown')
+								span {{s.opinion && s.opinion.description || ' -- '}}
+							ul.dropdown-menu.width-auto.opacity-09
+								li(data-ng-repeat='o in compc.opinionOptions track by o.opinionIndex')
+									a(href='#' data-ng-click='s.opinion = o; compc.calculateCriteriaWeights(); compc.calculateScores()') {{::o.description}}
+	.col-lg-6.col-md-12.col-sm-12.col-xs-12
+		h3 Candidate Surveys
+		.candidate-surveys
+			table.table.table-default.table-striped
+				tr
+					th #
+					th Question
+					th Opinion
+				tr(data-ng-repeat='s in compc.candidateSurveys')
+					td {{$index}}
+					td
+						span Is
+						span  [{{s.left.description}}]
+						span  better than
+						span  [{{s.right.description}}]
+						span  at
+						span  [{{s.criterion.description}}] ?
+					td
+						.dropdown
+							button.btn.btn-default.dropdown-toggle(type='button' data-toggle='dropdown')
+								span {{s.opinion && s.opinion.description || ' -- '}}
+							ul.dropdown-menu.width-auto.opacity-09
+								li(data-ng-repeat='o in compc.opinionOptions track by o.opinionIndex')
+									a(href='#' data-ng-click='s.opinion = o; compc.calculateScores()') {{::o.description}}

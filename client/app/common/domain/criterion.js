@@ -1,7 +1,7 @@
 class Criterion {
-  constructor(description, weight) {
+  constructor(description) {
     this._description = description;
-    this._weight = weight;
+    this._weight = 1;
   }
 
   get weight() {
